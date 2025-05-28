@@ -5,6 +5,32 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
   $scope.actTypeHeader = $scope.$parent.actionType;
 
 
+  // //  set default value - 11/01/2025
+  // if ($scope.WorkOrder.CheckOutDate == null || $scope.WorkOrder.CheckOutDate === undefined) {
+  //   $scope.WorkOrder.CheckOutDate = new Date(Date.now() + 1 * (60 * 60 * 1000));
+  // }
+
+  // if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate === undefined) {
+  //   $scope.WorkOrder.ServiceDate = new Date();
+  // }
+
+  // if ($scope.WorkOrder.CheckInDate == null || $scope.WorkOrder.CheckInDate === undefined) {
+  //   $scope.WorkOrder.CheckInDate = new Date();
+  // }
+
+
+  // if ($scope.WorkOrder.IsCustomerWaiting == null || $scope.WorkOrder.IsCustomerWaiting === undefined) {
+
+  //   if (__env.customerWaiting) {
+  //     $scope.WorkOrder.IsCustomerWaiting = 1;
+  //   } else {
+  //     $scope.WorkOrder.IsCustomerWaiting = 0;
+  //   }
+  // }
+
+  // //  end
+
+
   //DATETIME PICKER
   var that = this;
 
@@ -60,7 +86,6 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
         $scope.pristine = false;
       }
     }
-    console.log($scope.pristine)
   });
 
   $scope.$watch('WorkOrder.WOCustomer', function (newValue, oldValue) {
@@ -75,7 +100,6 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
         }
       }
     }
-    console.log($scope.pristine)
   });
 
   $scope.$watch('WorkOrder.WOContact', function (newValue, oldValue) {
@@ -89,9 +113,7 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
           $scope.pristine = true;
         }
       }
-      console.log($scope.pristine)
     }
-    console.log($scope.pristine)
   });
 
 
@@ -103,7 +125,6 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
       modified: modified,
     }
     );
-    console.log($scope.WorkOrder)
   });
 
   //get jobdata
@@ -201,6 +222,14 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
     console.log("afterRender");
     $rootScope.WorkOrderOrg = angular.copy($scope.WorkOrder);
   }
+
+  //  17/04/2025
+  $scope.visitReasonChange = function (item) {
+    if (item) {
+        $rootScope.$emit("visitReasonChange", {visitReason: item});
+    } 
+  }
+  //  end
 
 
 });

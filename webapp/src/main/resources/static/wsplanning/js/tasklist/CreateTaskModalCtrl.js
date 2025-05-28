@@ -1,5 +1,5 @@
 angular.module('UserWebApp').controller('CreateTaskModalCtrl', function ($scope, $rootScope, HttpService, $translate, $location, $filter, $uibModal,
-                                                                    $uibModalInstance, $timeout, CommonServices,TaskCustomer,WorkOrderNo, SiteId) {
+    $uibModalInstance, $timeout, CommonServices, TaskCustomer, WorkOrderNo, SiteId) {
     $scope.data = {};
     $scope.data.Id = "0";
     $scope.data.action = "insert";
@@ -35,25 +35,7 @@ angular.module('UserWebApp').controller('CreateTaskModalCtrl', function ($scope,
     loadCommon();
 
 
-    $scope.ok = function () {
-        HttpService.postData('/tasklist/saveTask', $scope.data, $("#btnSaveTask")).then(function (response) {
-            if(response == false || response == "false"){
-                common.notifyError($translate.instant('saveError'));
-                return;
-            }
-            $uibModalInstance.close($scope.data);
-            common.notifySuccess($translate.instant('saveSuccessfully'));
-        }, function error(response) {
-            common.notifyError($translate.instant('saveError'), err.status);
-        });
-    };
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
-
-
-    var that = this;
 
     $scope.isOpenDate = false;
 
@@ -68,8 +50,27 @@ angular.module('UserWebApp').controller('CreateTaskModalCtrl', function ($scope,
     //Modal
     var $ctrl = this;
     $ctrl.TaskCustomer = TaskCustomer;
-    $scope.data.TaskCustomer = $ctrl.TaskCustomer ;
+    $scope.data.TaskCustomer = $ctrl.TaskCustomer;
     $ctrl.animationsEnabled = true;
+
+
+    $ctrl.ok = function () {
+        HttpService.postData('/tasklist/saveTask', $scope.data, $("#btnSaveTask")).then(function (response) {
+            if (response == false || response == "false") {
+                common.notifyError($translate.instant('saveError'));
+                return;
+            }
+            $uibModalInstance.close($scope.data);
+            common.notifySuccess($translate.instant('saveSuccessfully'));
+        }, function error(response) {
+            common.notifyError($translate.instant('saveError'), err.status);
+        });
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
 
     $ctrl.openSearchCustomer = function (size, item) {
         var modalInstance = $uibModal.open({
@@ -98,7 +99,7 @@ angular.module('UserWebApp').controller('CreateTaskModalCtrl', function ($scope,
 });
 
 UserWebApp.controller('CustomerModalCtrl', function ($scope, $rootScope, $locale, HttpService, $translate,
-                                                     $location, $state, $filter, $uibModal, $uibModalInstance, CommonServices) {
+    $location, $state, $filter, $uibModal, $uibModalInstance, CommonServices) {
 
 
 

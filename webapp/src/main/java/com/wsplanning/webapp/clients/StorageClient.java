@@ -2,6 +2,7 @@ package com.wsplanning.webapp.clients;
 
 import com.wsplanning.webapp.RestTemplateResponseErrorHandler;
 import com.wsplanning.webapp.dto.WOAttachmentDTO;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by ThuyetLV
@@ -32,7 +35,7 @@ public class StorageClient {
         this.endpointUrl = apiEndpointUrl + "/api/Storage";
     }
 
-    //Download current vehicle condition picture:
+    // Download current vehicle condition picture:
     public String downloadVehicleAttachment(String token, String vehiId, String attachType) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -43,11 +46,12 @@ public class StorageClient {
         String url = String.format("%s/ccar?VehiId=%s&AttachType=%s", this.endpointUrl, vehiId, attachType);
         logger.info("----------------downloadVehicleAttachment: " + url);
         HttpEntity entity = new HttpEntity(headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class, new HashMap<>());
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class,
+                new HashMap<>());
         return response.getBody();
     }
 
-    //Take a photo of vehicle and upload it
+    // Take a photo of vehicle and upload it
     public String uploadVehicleAttachment(String token, String vehiId, WOAttachmentDTO data) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -74,7 +78,8 @@ public class StorageClient {
         String url = String.format("%s/cust?CustId=%s&AttachType=%s", this.endpointUrl, custId, attachType);
         logger.info("----------------downloadCustAttachment: " + url);
         HttpEntity entity = new HttpEntity(headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class, new HashMap<>());
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class,
+                new HashMap<>());
         if (HttpStatus.NO_CONTENT == response.getStatusCode()) {
 
         }
@@ -93,7 +98,19 @@ public class StorageClient {
         headers.set("Content-Type", "application/json");
         HttpEntity<WOAttachmentDTO> entity = new HttpEntity<WOAttachmentDTO>(data, headers);
         String url = String.format("%s/cust", this.endpointUrl);
+        logger.info("-------- uploadCustAttachment url = " + url);
+        logger.info("-------- token = " + token);
+        logger.info("-------- custId = " + custId);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonOutput = objectMapper.writeValueAsString(data);
+            logger.info("-------- WOAttachmentDTO = " + jsonOutput);
+        } catch (Exception exception) {
+            logger.error("-------- uploadCustAttachment Error parsing", exception);
+        }
+
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        logger.info(response.getBody());
         return response.getBody();
     }
 

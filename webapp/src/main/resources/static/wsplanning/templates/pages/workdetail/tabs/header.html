@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-4">{{ 'visitReason' | translate }}</label>
                             <div class="col-xs-8">
-                                <select class="form-control" ng-model="WorkOrder.VisitReasonCode"
+                                <select class="form-control" ng-model="WorkOrder.VisitReasonCode" ng-change="onVisitReasonChange(item)"
                                     ng-options="item.Id as item.Name for item in lstVisitReason">
                                 </select>
                             </div>
@@ -137,7 +137,8 @@
                                 <div class="form-group">
                                     <label class="checkbox-inline">
                                         <input type="checkbox" ng-model="WorkOrder.IsCustomerWaiting"
-                                               ng-checked="WorkOrder.IsCustomerWaiting == true" ng-true-value="true" ng-false-value="false">
+                                            ng-checked="WorkOrder.IsCustomerWaiting" ng-true-value="1"
+                                            ng-false-value="0">
                                         {{ 'isCustomerWaiting' | translate }}
                                     </label>
                                 </div>

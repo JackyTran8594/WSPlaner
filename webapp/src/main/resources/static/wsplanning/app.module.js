@@ -21,6 +21,12 @@ var UserWebApp = angular.module('UserWebApp', [
 ]);
 
 
+// Import variables if present (from env.js)
+var env = {};
+if(window){
+    Object.assign(env, window.__env);
+}
+
 angular.module('UserWebApp').config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
     $ocLazyLoadProvider.config({
         modules: [{
@@ -48,7 +54,8 @@ angular.module('UserWebApp').config(['$ocLazyLoadProvider', function ($ocLazyLoa
                         '/wsplanning/js/tasklist/CloseTaskCtrl.js',
                         '/wsplanning/js/tasklist/TaskListCtrl.js',
                     ]
-            },{
+            },
+            {
                 name: 'workorderDetail',
                 files:
                     [
@@ -75,6 +82,10 @@ angular.module('UserWebApp').config(['$ocLazyLoadProvider', function ($ocLazyLoa
         debug: true
     });
 }]);
+
+
+// Register environment in AngularJS as constant
+UserWebApp.constant('__env', env);
 
 UserWebApp.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);

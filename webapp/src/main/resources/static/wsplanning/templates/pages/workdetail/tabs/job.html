@@ -9,7 +9,7 @@
 
             <!-- Panel content -->
             <div class="panel panel-flat" style="margin-bottom: 0px;">
-                <div class="panel-heading" ng-class="{'panel-height':collapseJobDetail == true}">
+                <div class="panel-heading" ng-style="{'background-color': getBackGroudColor()} ng-class="{'panel-height':collapseJobDetail == true}">
                     <div class="row" ng-show="collapseJobDetail">
                         <div class="col-md-7 col-xs-4 col-md-offset-5 col-xs-offset-8">
                             <div class="pull-right">
@@ -468,6 +468,9 @@
                                                                 </td>
                                                                 <td class="text-left">
                                                                     <span>{{obj.Name}}</span>
+                                                                    <span ng-show="detechURLs(obj.Name)">
+                                                                        <a ng-click="openHyperlink(obj.Name)">Link</a>
+                                                                    </span>
                                                                 </td>
                                                                 <td class="text-center" style="width: 5%">
                                                                     <span ng-hide="obj.ItemType === 8">

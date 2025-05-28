@@ -1,4 +1,6 @@
-UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpService, $translate, $location, $filter, $uibModal, CommonServices, CommonFactory, $stateParams, $state, WorkOrder, lstMonth, WorkOrderService) {
+UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpService, $translate, $location, $filter, $uibModal, CommonServices, CommonFactory, $stateParams, $state, WorkOrder, lstMonth, WorkOrderService, __env) {
+
+    console.log(__env.customerWaiting);
 
     $scope.WorkOrderId = $stateParams.id;
     $scope.type = $stateParams.type;
@@ -147,19 +149,49 @@ UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpServic
     }
     $scope.workOrderNo = WorkOrder.data.WorkOrderNo;
 
+    //  set default value - 11/01/2025
+//   if ($scope.WorkOrder.CheckOutDate == null || $scope.WorkOrder.CheckOutDate === undefined) {
+//     $scope.WorkOrder.CheckOutDate = new Date(Date.now() + 1 * (60 * 60 * 1000));
+//   }
 
-    if ($scope.WorkOrder.ServiceDate == "" || $scope.WorkOrder.ServiceDate == "0001-01-01T00:00:00") {
-        $scope.WorkOrder.ServiceDate = "0001-01-01T00:00:00";
+//   if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate === undefined) {
+//     $scope.WorkOrder.ServiceDate = new Date();
+//   }
+
+//   if ($scope.WorkOrder.CheckInDate == null || $scope.WorkOrder.CheckInDate === undefined) {
+//     $scope.WorkOrder.CheckInDate = new Date();
+//   }
+
+
+  if ($scope.WorkOrder.IsCustomerWaiting == null || $scope.WorkOrder.IsCustomerWaiting === undefined) {
+
+    if (__env.customerWaiting) {
+      $scope.WorkOrder.IsCustomerWaiting = 1;
+    } else {
+      $scope.WorkOrder.IsCustomerWaiting = 0;
+    }
+  }
+
+  //  end
+
+    if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate == "" || $scope.WorkOrder.ServiceDate == "0001-01-01T00:00:00") {
+        // $scope.WorkOrder.ServiceDate = "0001-01-01T00:00:00";
+        //  set default value - 11/01/2025
+        $scope.WorkOrder.ServiceDate = new Date();
     } else {
         $scope.WorkOrder.ServiceDate = new Date($scope.WorkOrder.ServiceDate);
     }
-    if ($scope.WorkOrder.CheckOutDate == "" || $scope.WorkOrder.CheckOutDate == "0001-01-01T00:00:00") {
-        $scope.WorkOrder.CheckOutDate = "0001-01-01T00:00:00";
+    if ($scope.WorkOrder.CheckOutDate == null || $scope.WorkOrder.CheckOutDate == "" || $scope.WorkOrder.CheckOutDate == "0001-01-01T00:00:00") {
+        // $scope.WorkOrder.CheckOutDate = "0001-01-01T00:00:00";
+        //  set default value - 11/01/2025
+        $scope.WorkOrder.CheckOutDate = new Date(Date.now() + 1 * (60 * 60 * 1000));
     } else {
         $scope.WorkOrder.CheckOutDate = new Date($scope.WorkOrder.CheckOutDate);
     }
-    if ($scope.WorkOrder.CheckInDate == "" || $scope.WorkOrder.CheckInDate == "0001-01-01T00:00:00") {
-        $scope.WorkOrder.CheckInDate = "0001-01-01T00:00:00";
+    if ($scope.WorkOrder.CheckInDate == null || $scope.WorkOrder.CheckInDate == "" || $scope.WorkOrder.CheckInDate == "0001-01-01T00:00:00") {
+        // $scope.WorkOrder.CheckInDate = "0001-01-01T00:00:00";
+        //  set default value - 11/01/2025
+        $scope.WorkOrder.CheckInDate = new Date();
     } else {
         $scope.WorkOrder.CheckInDate = new Date($scope.WorkOrder.CheckInDate);
     }
