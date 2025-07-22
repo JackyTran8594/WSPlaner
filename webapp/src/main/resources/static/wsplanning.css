@@ -777,6 +777,9 @@ div .btn-notification.btn-group {
     position: absolute;
     z-index: 1;
     cursor: pointer;
+    /* 01062025 */
+    width: 98%;
+    /* end */
 }
 
 .form-horizontal>input,

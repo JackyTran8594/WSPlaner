@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label class="control-label col-xs-4">{{ 'visitReason' | translate }}</label>
                             <div class="col-xs-8">
-                                <select class="form-control" ng-model="WorkOrder.VisitReasonCode" ng-change="onVisitReasonChange(item)"
+                                <select class="form-control" ng-model="WorkOrder.VisitReasonCode"
                                     ng-options="item.Id as item.Name for item in lstVisitReason">
                                 </select>
                             </div>

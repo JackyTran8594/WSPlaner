@@ -150,29 +150,29 @@ UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpServic
     $scope.workOrderNo = WorkOrder.data.WorkOrderNo;
 
     //  set default value - 11/01/2025
-//   if ($scope.WorkOrder.CheckOutDate == null || $scope.WorkOrder.CheckOutDate === undefined) {
-//     $scope.WorkOrder.CheckOutDate = new Date(Date.now() + 1 * (60 * 60 * 1000));
-//   }
+    //   if ($scope.WorkOrder.CheckOutDate == null || $scope.WorkOrder.CheckOutDate === undefined) {
+    //     $scope.WorkOrder.CheckOutDate = new Date(Date.now() + 1 * (60 * 60 * 1000));
+    //   }
 
-//   if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate === undefined) {
-//     $scope.WorkOrder.ServiceDate = new Date();
-//   }
+    //   if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate === undefined) {
+    //     $scope.WorkOrder.ServiceDate = new Date();
+    //   }
 
-//   if ($scope.WorkOrder.CheckInDate == null || $scope.WorkOrder.CheckInDate === undefined) {
-//     $scope.WorkOrder.CheckInDate = new Date();
-//   }
+    //   if ($scope.WorkOrder.CheckInDate == null || $scope.WorkOrder.CheckInDate === undefined) {
+    //     $scope.WorkOrder.CheckInDate = new Date();
+    //   }
 
 
-  if ($scope.WorkOrder.IsCustomerWaiting == null || $scope.WorkOrder.IsCustomerWaiting === undefined) {
+    if ($scope.WorkOrder.IsCustomerWaiting == null || $scope.WorkOrder.IsCustomerWaiting === undefined) {
 
-    if (__env.customerWaiting) {
-      $scope.WorkOrder.IsCustomerWaiting = 1;
-    } else {
-      $scope.WorkOrder.IsCustomerWaiting = 0;
+        if (__env.customerWaiting) {
+            $scope.WorkOrder.IsCustomerWaiting = 1;
+        } else {
+            $scope.WorkOrder.IsCustomerWaiting = 0;
+        }
     }
-  }
 
-  //  end
+    //  end
 
     if ($scope.WorkOrder.ServiceDate == null || $scope.WorkOrder.ServiceDate == "" || $scope.WorkOrder.ServiceDate == "0001-01-01T00:00:00") {
         // $scope.WorkOrder.ServiceDate = "0001-01-01T00:00:00";
@@ -425,8 +425,10 @@ UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpServic
     }
 
     $scope.replacementVehicle = function () {
-        $state.go('app.main.replacementvehicle', { 'workOrderNo': WorkOrder.data.WorkOrderNo, 
-                                            'type': null, 'workOrderId': WorkOrder.data.WorkOrderId });
+        $state.go('app.main.replacementvehicle', {
+            'workOrderNo': WorkOrder.data.WorkOrderNo,
+            'type': null, 'workOrderId': WorkOrder.data.WorkOrderId
+        });
     }
 
     $scope.openModalTasklist = function () {
@@ -456,6 +458,27 @@ UserWebApp.controller('WorkDetailCtrl', function ($scope, $rootScope, HttpServic
             console.log('Modal dismissed at: ' + new Date());
         });
     }
+
+    // 17/04/2025
+    var backGroudColor = "";
+
+    $scope.getBackGroudColor = function () {
+        if (backGroudColor == "" || backGroudColor == undefined) {
+            return "#fff";
+        }
+        return backGroudColor;
+    }
+
+    $rootScope.$on("visitReasonChange", function (evt, obj) {
+        console.log(obj)
+        var color = __env.backGroundColorByVisitReason.filter(x => x.Id == obj.visitReason);
+        if (color.length > 0) {
+            backGroudColor = color[0].ColorCode;
+        } else {
+            backGroudColor = "#fff";
+        }
+    })
+    // end
 });
 
 UserWebApp.controller('ConfirmSaveTabCtrl', function ($scope, $uibModalInstance) {

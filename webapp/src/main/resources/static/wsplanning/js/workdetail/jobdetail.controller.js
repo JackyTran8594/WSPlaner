@@ -1,5 +1,6 @@
 UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope, $window, $timeout, WorkOrderService, $uibModal, CommonServices, CommonFactory, $stateParams, $state, __env) {
 
+     // common params, function
     var $ctrl = this;
     var stampingCode = {};
     $scope.jobParams = $scope.$parent.jobObject;
@@ -10,6 +11,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
     $scope.lstTextPredict = [];
     $scope.externalUrl = [];
     $scope.count_Vehi_Notification = $scope.jobParams.VehicleNotifications.length;
+    $scope.priority = false;
     $scope.lstDepartment = [];
     $scope.lstPayers = [];
     $scope.lstChargeCats = [];
@@ -57,6 +59,12 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         item.collapse = !item.collapse;
     }
 
+    
+    $scope.collapseJobDetail = false;
+    $scope.toggleJobDetail = function() {
+        $scope.collapseJobDetail = !$scope.collapseJobDetail;
+        console.log($scope.collapseJobDetail);
+    }
 
 
     function clearObject() {
@@ -170,10 +178,33 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             $scope.externalUrl = $scope.WorkOrder.ExternalURL;
             $scope.externalUrl.unshift({ "Id": "", "Name": $translate.instant('pleaseSelect') });
         }
+      
+        // check priority for badge
+        if ($scope.jobParams.VehicleNotifications) {
+            var num = 0;
+            angular.forEach($scope.jobParams.VehicleNotifications, function(v, k) {
+                if (v.NValue == 1) {
+                    num += 1;
+                }
+            })
+            if (num > 0) {
+                $scope.priority = true;
+            }
+        }
 
     }
 
+//end common params, function
 
+    // row item - manipulation
+
+
+
+    $scope.IdSelectedRow = null;
+    $scope.isSelectedRow = function(id) {
+        $scope.IdSelectedRow = id;
+        // console.log(id)
+    }
     $scope.getClass = function (param, mechanicId) {
         switch (param) {
             case 1:
@@ -193,18 +224,32 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         }
     }
 
+     var EmployeeData = $("#EmployeeData").data("employee");
+    // console.log(EmployeeData);
 
-    $scope.getCheckRow = function (parentId, id, checked) {
+    $scope.getCheckRow = function(parentId, id, checked) {
         if (checked == false) {
             $scope.jobTabList[parentId].Items[id].MechanicId = null;
             console.log("--done--");
         } else {
             // console.log( $scope.WorkOrder)
-            $scope.jobTabList[parentId].Items[id].MechanicId = $scope.WorkOrder.Token.EmployeeData.SmanId;
-            console.log($scope.jobTabList[parentId].Items[id]);
+            $scope.jobTabList[parentId].Items[id].MechanicId = EmployeeData.SmanId;
+            // console.log($scope.jobTabList[parentId].Items[id]);
             console.log("--done--");
         }
     }
+
+    // $scope.getCheckRow = function (parentId, id, checked) {
+    //     if (checked == false) {
+    //         $scope.jobTabList[parentId].Items[id].MechanicId = null;
+    //         console.log("--done--");
+    //     } else {
+    //         // console.log( $scope.WorkOrder)
+    //         $scope.jobTabList[parentId].Items[id].MechanicId = $scope.WorkOrder.Token.EmployeeData.SmanId;
+    //         console.log($scope.jobTabList[parentId].Items[id]);
+    //         console.log("--done--");
+    //     }
+    // }
 
     $scope.limit = 5;
     $scope.page = 1;
@@ -325,6 +370,32 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
     // modal
     $ctrl.animationsEnabled = true;
 
+     $scope.editItem = function(parentId, childrenId, value) {
+        var modalInstance = $uibModal.open({
+            animation: $ctrl.animationsEnabled,
+            templateUrl: '/wsplanning/templates/pages/workdetail/modal/editVehicleNotification-form.html',
+            controller: 'EditVehicleNotificationCtrl',
+            backdrop: 'static',
+            controllerAs: '$ctrl',
+            size: 'lg',
+            resolve: {
+                item: function() {
+                    return value;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(valueChanged) {
+            // console.log(valueChanged)
+            $scope.jobTabList[parentId].Items[childrenId].Name = valueChanged;
+
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    }
+
+
+
     $scope.openServiceItem = function (item, id) {
         var modalInstance = $uibModal.open({
             animation: $ctrl.animationsEnabled,
@@ -356,7 +427,8 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             $scope.$on('reference', function (event, obj) {
                 reference = obj.item;
             })
-            if (typeof (selectedItem) === "string") {
+            var idSelectedRow = $scope.IdSelectedRow
+            if (typeof(selectedItem) === "string") {
                 if ($scope.jobTabList[id].Items == null) {
                     var charactersObject = createItem();
                     charactersObject.Name = selectedItem;
@@ -373,20 +445,33 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
                     charactersObject.MechanicId = "";
                     charactersObject.RowId = 0;
                     charactersObject.Reference = reference;
-                    $scope.jobTabList[id].Items.push(charactersObject);
+
+                    // checking id (selectedRow) to splice object into list items
+                    // console.log(idSelectedRow)
+                    if (idSelectedRow != null) {
+                        $scope.jobTabList[id].Items.splice(idSelectedRow, 0, charactersObject);
+                    } else {
+                        $scope.jobTabList[id].Items.push(charactersObject);
+                    }
                 }
 
             } else {
+                // selectedItem is array/list
+        
                 if ($scope.jobTabList[id].Items == null) {
                     $scope.jobTabList[id].Items = [];
-                    angular.forEach(selectedItem, function (v) {
-                        $scope.jobTabList[id].Items.push(v);
-                    })
-                }
-                else {
-                    angular.forEach(selectedItem, function (v) {
-                        $scope.jobTabList[id].Items.push(v);
-                    })
+                    $scope.jobTabList[id].Items = $scope.jobTabList[id].Items.concat(selectedItem)
+                    
+                } else {
+                    // checking id (selectedRow) to splice object into list items
+                    if (idSelectedRow != null) {
+                        var length_of_Items = $scope.jobTabList[id].Items.length;
+                        var array_const = $scope.jobTabList[id].Items.splice(idSelectedRow, length_of_Items - idSelectedRow);
+                        $scope.jobTabList[id].Items = $scope.jobTabList[id].Items.concat(selectedItem, array_const);
+
+                    } else {
+                        $scope.jobTabList[id].Items = $scope.jobTabList[id].Items.concat(selectedItem);
+                    }
                 }
 
             }
@@ -585,7 +670,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             console.log('Modal dismissed at: ' + new Date());
         });
     };
-
+  //end action in job row: open model for the actions such as : create job, create item,...
 
     var headerData = {};
     // get headerData
@@ -804,6 +889,8 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
     })
 
     const urlRegex = /\b(?:https?:\/\/)?(?:www\.)?[\w-]+\.[a-z]{2,}(?:[^\s]*)\b/gi;
+    
+	const urlRegexHref = /href="(.*?)"/;
 
     $scope.textURLs = "Go to https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html"
 
@@ -813,18 +900,36 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         return urlRegex.test(text);
     }
 
-    $scope.extractURLs = function (text) {
-        // console.log(text);
-        return text.match(urlRegex);
+    // $scope.extractURLs = function (text) {
+        // // console.log(text);
+        // return text.match(urlRegex);
+    // }
+	
+	function extractURLs(text) {
+        const match = text.match(urlRegexHref);
+
+		if (match && match[1]) {
+		  console.log('=== href ===');
+		  // const url = match[1];
+		  const matchUrl = text.match(match[1]);
+		  // console.log(url);
+		  console.log(matchUrl[0]);
+		  return matchUrl[0];
+		} else {
+		  console.log('=== URL ===');
+		  const matchUrl = text.match(urlRegex);
+		  console.log(matchUrl[0]);
+		  return matchUrl[0];
+		}
+		
     }
 
     $scope.openHyperlink = function (text) {
-        var url = text.match(urlRegex);
-        // console.log(url)
-        $window.open(url[0], '_blank');
-        if (url && url.length > 0) {
-
-        }
+        // var url = text.match(urlRegex);
+		var url = extractURLs(text);
+        console.log(url)
+        $window.open(url, '_blank');
+        
     }
     // end
 

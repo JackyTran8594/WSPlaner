@@ -200,7 +200,8 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
           });
         } else {
           console.log("------4-------");
-          $state.go('app.main.workdetail', { 'id': res.data.WorkOrderId, 'type': $stateParams.type });
+          // $state.go('app.main.workdetail', { 'id': res.data.WorkOrderId, 'type': $stateParams.type });
+          $state.reload();
         }
         // $state.go('app.main.workdetail', { 'id': res.data.WorkOrderId , 'type': $stateParams.type });
 
@@ -224,12 +225,17 @@ UserWebApp.controller('HeaderDetailCtrl', function ($scope, $rootScope, WorkOrde
   }
 
   //  17/04/2025
-  $scope.visitReasonChange = function (item) {
+  $scope.onVisitReasonChange = function (item) {
     if (item) {
-        $rootScope.$emit("visitReasonChange", {visitReason: item});
-    } 
+      $rootScope.$emit("visitReasonChange", { visitReason: item });
+    }
   }
-  //  end
 
+  $scope.$watch("WorkOrder.VisitReasonCode", function (prev, current) {
+    console.log(prev);
+    console.log(current);
+    $rootScope.$emit("visitReasonChange", { visitReason: current });
+  });
+  //  end
 
 });
