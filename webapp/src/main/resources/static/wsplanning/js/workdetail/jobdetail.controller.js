@@ -1,6 +1,6 @@
 UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope, $window, $timeout, WorkOrderService, $uibModal, CommonServices, CommonFactory, $stateParams, $state, __env) {
 
-     // common params, function
+    // common params, function
     var $ctrl = this;
     var stampingCode = {};
     $scope.jobParams = $scope.$parent.jobObject;
@@ -59,9 +59,9 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         item.collapse = !item.collapse;
     }
 
-    
+
     $scope.collapseJobDetail = false;
-    $scope.toggleJobDetail = function() {
+    $scope.toggleJobDetail = function () {
         $scope.collapseJobDetail = !$scope.collapseJobDetail;
         console.log($scope.collapseJobDetail);
     }
@@ -178,11 +178,11 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             $scope.externalUrl = $scope.WorkOrder.ExternalURL;
             $scope.externalUrl.unshift({ "Id": "", "Name": $translate.instant('pleaseSelect') });
         }
-      
+
         // check priority for badge
         if ($scope.jobParams.VehicleNotifications) {
             var num = 0;
-            angular.forEach($scope.jobParams.VehicleNotifications, function(v, k) {
+            angular.forEach($scope.jobParams.VehicleNotifications, function (v, k) {
                 if (v.NValue == 1) {
                     num += 1;
                 }
@@ -194,14 +194,14 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
 
     }
 
-//end common params, function
+    //end common params, function
 
     // row item - manipulation
 
 
 
     $scope.IdSelectedRow = null;
-    $scope.isSelectedRow = function(id) {
+    $scope.isSelectedRow = function (id) {
         $scope.IdSelectedRow = id;
         // console.log(id)
     }
@@ -224,10 +224,10 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         }
     }
 
-     var EmployeeData = $("#EmployeeData").data("employee");
+    var EmployeeData = $("#EmployeeData").data("employee");
     // console.log(EmployeeData);
 
-    $scope.getCheckRow = function(parentId, id, checked) {
+    $scope.getCheckRow = function (parentId, id, checked) {
         if (checked == false) {
             $scope.jobTabList[parentId].Items[id].MechanicId = null;
             console.log("--done--");
@@ -370,7 +370,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
     // modal
     $ctrl.animationsEnabled = true;
 
-     $scope.editItem = function(parentId, childrenId, value) {
+    $scope.editItem = function (parentId, childrenId, value) {
         var modalInstance = $uibModal.open({
             animation: $ctrl.animationsEnabled,
             templateUrl: '/wsplanning/templates/pages/workdetail/modal/editVehicleNotification-form.html',
@@ -379,17 +379,17 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             controllerAs: '$ctrl',
             size: 'lg',
             resolve: {
-                item: function() {
+                item: function () {
                     return value;
                 }
             }
         });
 
-        modalInstance.result.then(function(valueChanged) {
+        modalInstance.result.then(function (valueChanged) {
             // console.log(valueChanged)
             $scope.jobTabList[parentId].Items[childrenId].Name = valueChanged;
 
-        }, function() {
+        }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
     }
@@ -428,7 +428,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
                 reference = obj.item;
             })
             var idSelectedRow = $scope.IdSelectedRow
-            if (typeof(selectedItem) === "string") {
+            if (typeof (selectedItem) === "string") {
                 if ($scope.jobTabList[id].Items == null) {
                     var charactersObject = createItem();
                     charactersObject.Name = selectedItem;
@@ -457,11 +457,11 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
 
             } else {
                 // selectedItem is array/list
-        
+
                 if ($scope.jobTabList[id].Items == null) {
                     $scope.jobTabList[id].Items = [];
                     $scope.jobTabList[id].Items = $scope.jobTabList[id].Items.concat(selectedItem)
-                    
+
                 } else {
                     // checking id (selectedRow) to splice object into list items
                     if (idSelectedRow != null) {
@@ -670,7 +670,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             console.log('Modal dismissed at: ' + new Date());
         });
     };
-  //end action in job row: open model for the actions such as : create job, create item,...
+    //end action in job row: open model for the actions such as : create job, create item,...
 
     var headerData = {};
     // get headerData
@@ -888,48 +888,69 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
         }
     })
 
-    const urlRegex = /\b(?:https?:\/\/)?(?:www\.)?[\w-]+\.[a-z]{2,}(?:[^\s]*)\b/gi;
-    
-	const urlRegexHref = /href="(.*?)"/;
+    // const urlRegex = /\b(?:https?:\/\/)?(?:www\.)?[\w-]+\.[a-z]{2,}(?:[^\s]*)\b/gi;
+
+    // const urlRegexHref = /href="(.*?)"/;
+
+    const urlRegexDomain =
+        /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*|(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?)/gi;
+    // const urlRegexIp =
+    //     /(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?/gm;
 
     $scope.textURLs = "Go to https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html"
 
     $scope.text2URLs = "<a href='https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html'>Go to vnexpress</a>";
 
     $scope.detechURLs = function (text) {
-        return urlRegex.test(text);
+        // Check if the text contains a URL
+        if (!text) {
+            return false; // No text provided
+        }
+        if (typeof text !== 'string') {
+            return false; // Not a string
+        }
+        // Use the regex to test for URLs
+        if (urlRegexDomain.test(text)) {
+            return true; // URL found
+        }
+        return false; // No URL found
     }
 
-    // $scope.extractURLs = function (text) {
-        // // console.log(text);
-        // return text.match(urlRegex);
-    // }
-	
-	function extractURLs(text) {
-        const match = text.match(urlRegexHref);
+    $scope.extractURL = extractURLs;
 
-		if (match && match[1]) {
-		  console.log('=== href ===');
-		  // const url = match[1];
-		  const matchUrl = text.match(match[1]);
-		  // console.log(url);
-		  console.log(matchUrl[0]);
-		  return matchUrl[0];
-		} else {
-		  console.log('=== URL ===');
-		  const matchUrl = text.match(urlRegex);
-		  console.log(matchUrl[0]);
-		  return matchUrl[0];
-		}
-		
+    function extractURLs(text) {
+        const match = text.match(urlRegexDomain);
+        if (match && match.length > 0) {
+            const matchUrl = match[0];
+            console.log('=== URL domain ===' + matchUrl);
+            return matchUrl; // Return the first matched URL
+        }
+        return null; // No URL found
+
+        // if (match && match.length > 0) {
+        //     const matchUrl = text.match(match[0]);
+        //     console.log('=== URL domain type ===' + matchUrl[0]);
+        //     return matchUrl[0];
+        // } else {
+        //     // If no domain URL found, check for IP address URLs
+        //     const matchUrlIp = text.match(urlRegexIp);
+        //     console.log(matchUrlIp);
+        //     if (matchUrlIp && matchUrlIp.length > 0) {
+        //         const urlDomain = matchUrlIp[0];
+        //         console.log('=== URL IP type ===' + urlDomain);
+        //         return urlDomain;
+        //     }
+        //     return null; // No URL found
+        // }
+
     }
 
     $scope.openHyperlink = function (text) {
         // var url = text.match(urlRegex);
-		var url = extractURLs(text);
+        var url = extractURLs(text);
         console.log(url)
         $window.open(url, '_blank');
-        
+
     }
     // end
 

@@ -9,20 +9,22 @@
 
             <!-- Panel content -->
             <div class="panel panel-flat" style="margin-bottom: 0px;">
-                <div class="panel-heading" ng-style="{'background-color': getBackGroudColor()}" ng-class="{'panel-height':collapseJobDetail == true}">
+                <div class="panel-heading" ng-style="{'background-color': getBackGroudColor()}"
+                    ng-class="{'panel-height':collapseJobDetail == true}">
                     <div class="row" ng-show="collapseJobDetail">
                         <div class="col-md-6 col-xs-4 col-md-offset-5 col-xs-offset-8">
                             <div class="pull-right">
                                 <div class="heading-elements padding-icon">
                                     <ul class="icons-list">
                                         <li ng-click="toggleJobDetail()">
-                                            
+
                                             <a class="btn btn-lg rotate-180" data-action="collapse" data-popup="tooltip"
                                                 title="Collapse Detail">
                                             </a>
                                         </li>
                                         <li ng-click="toggleAllJobs()">
-                                            <a class="btn btn-lg" ng-class="{'rotate-180': isShow == true}" data-action="collapse" data-popup="tooltip" title="Collapse"></a>
+                                            <a class="btn btn-lg" ng-class="{'rotate-180': isShow == true}"
+                                                data-action="collapse" data-popup="tooltip" title="Collapse"></a>
 
                                         </li>
                                         <li><a class="btn btn-lg" data-popup="tooltip" data-placement="top" title="Add"
@@ -46,7 +48,7 @@
                                     data-popup="tooltip" data-placement="top" title="Campaign">
                                     <i class="icon-warning campaignCSS"></i>
                                     <span class="visible-xs-inline-block position-right"></span>
-                                       <span ng-if="priority == 1"
+                                    <span ng-if="priority == 1"
                                         class="badge bg-warning-400 badge_campaign">{{count_Vehi_Notification}}</span>
                                     <span ng-if="priority == 0"
                                         class="badge bg-success-800 badge_campaign_green">{{count_Vehi_Notification}}</span>
@@ -83,7 +85,8 @@
                                             </a>
                                         </li>
                                         <li ng-click="toggleAllJobs()">
-                                            <a class="btn btn-lg"  ng-class="{'rotate-180': isShow == true}" data-action="collapse" data-popup="tooltip" title="Collapse"></a>
+                                            <a class="btn btn-lg" ng-class="{'rotate-180': isShow == true}"
+                                                data-action="collapse" data-popup="tooltip" title="Collapse"></a>
 
                                         </li>
                                         <li><a class="btn btn-lg" data-popup="tooltip" data-placement="top" title="Add"
