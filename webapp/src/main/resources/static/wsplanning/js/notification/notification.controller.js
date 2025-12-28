@@ -170,10 +170,11 @@ UserWebApp.controller('NotificationUnReadCtrl', function ($scope, $rootScope, Wo
 
       var obj = object();
       obj.Note = $scope.UnRead[id].Note;
-      obj.SmanId = item.SmanId;
+      // obj.SmanId = item.SmanId;
+      obj.SmanId = (selectedItem.smanId) ? selectedItem.smanId : item.CreatedBy;
       obj.WorkOrderId = $scope.UnRead[id].WorkOrderId;
       obj.WorkOrderRowId = item.WorkOrderRowId;
-
+      console.log(obj);
       HttpService.postData('/site/postNotification', obj).then(function (response) {
         common.spinner(false);
       }, function error(response) {
@@ -281,8 +282,8 @@ UserWebApp.controller('ReplyNotificationCtrl', function ($scope,
   // console.log(item);
 
   $scope.target = {
-    'employee': item.SmanName,
-    'smanId': item.SmanId
+    'employee': item.CreatedByName,
+    'smanId': item.CreatedBy
   }
 
   $ctrl.cancel = function () {
