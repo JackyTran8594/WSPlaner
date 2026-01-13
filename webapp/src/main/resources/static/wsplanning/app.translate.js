@@ -434,6 +434,9 @@ var translationsEN = {
   //03042025
   Disclaimer: "Disclaimer",
 
+  // 20260114 - current hours
+  CurrentHours: "Current hours",
+
 };
 
 
@@ -863,6 +866,8 @@ var translationsDE = {
   //03042025
   Disclaimer: "Haftungsausschluss",
 
+  // 20260114 - current hours
+  CurrentHours: "Aktueller h-Stand",
 
 };
 
@@ -1281,6 +1286,9 @@ var translationsFR = {
 
   //03042025
   Disclaimer: "Décharge responsabilité",
+  
+  // 20260114 - current hours
+  CurrentHours: "Heures actuelle",
 };
 
 var translationsIT = {
@@ -1697,6 +1705,9 @@ var translationsIT = {
 
   //03042025
   Disclaimer: "Disclaimer",
+
+  // 20260114 - current hours
+  CurrentHours: "Ore attuali",
 
 };
 
