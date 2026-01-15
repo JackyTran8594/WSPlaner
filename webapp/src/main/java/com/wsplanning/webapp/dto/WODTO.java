@@ -86,4 +86,7 @@ public class WODTO {
     public TokenDTO Token;  
   
     public List<MasterDataDTO> WOAddInf; 
+
+    // 2026-01-10 Add UseHours field
+    public Integer UseHours;
 }
