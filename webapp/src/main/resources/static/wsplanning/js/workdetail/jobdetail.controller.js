@@ -899,7 +899,7 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
 
     $scope.textURLs = "Go to https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html"
 
-    $scope.text2URLs = "<a href='https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html'>Go to vnexpress</a>";
+    $scope.text2URLs = "<a href='https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html'>Go to vnexpress</a> ; <a href='https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html'>Go to vnexpress</a>";
 
     $scope.detechURLs = function (text) {
         // Check if the text contains a URL
@@ -914,6 +914,15 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
             return true; // URL found
         }
         return false; // No URL found
+    }
+
+    
+    $scope.splitURL = function (text) {
+        const match = text.match(urlRegexDomain);
+        if (match && match.length > 0) {
+            const listURL = text.split(";");
+            return listURL; 
+        }
     }
 
     $scope.extractURL = extractURLs;
