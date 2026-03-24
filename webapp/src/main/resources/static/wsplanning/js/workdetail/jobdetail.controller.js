@@ -892,10 +892,14 @@ UserWebApp.controller('JobDetailCtrl', function ($scope, $translate, $rootScope,
 
     // const urlRegexHref = /href="(.*?)"/;
 
-    const urlRegexDomain =
-        /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*|(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?)/gi;
-    // const urlRegexIp =
-    //     /(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?/gm;
+    // với regex này sẽ detect được cả URL có domain và URL có IP, có hoặc không có http/https, có hoặc không có www, và có thể có port và path sau domain/IP
+    // nhưng có chữ flag g, JS sẽ lưu lại thuộc tính lastIndex của regex, nếu có nhiều URL trong cùng một text thì sẽ bị lỗi khi detect URL tiếp theo
+    // , vì lastIndex sẽ không reset về 0 sau mỗi lần detect, dẫn đến việc bỏ qua các URL sau đó trong text. Do đó, cần loại bỏ flag g để regex luôn bắt đầu tìm kiếm từ đầu chuỗi mỗi khi được gọi.
+    // const urlRegexDomain =
+    //     /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*|(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?)/gi;
+
+    // new regex from 2026-03-24
+    const urlRegexDomain = /(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*|(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?)(?:\/[^\s]*)?)/i;
 
     $scope.textURLs = "Go to https://vnexpress.net/cong-ty-cua-trump-tiep-tuc-thua-lo-4779846.html"
 
