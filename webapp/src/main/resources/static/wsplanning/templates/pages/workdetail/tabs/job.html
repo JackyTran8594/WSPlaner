@@ -465,9 +465,7 @@
                                                                 <td class="text-left">
                                                                     <span>{{obj.Name}}</span>
                                                                     <span ng-show="detechURLs(obj.Name)">
-                                                                        <span ng-repeat="url in splitURL(obj.Name) track by $index">
-                                                                            <a ng-click="openHyperlink(url)">Link {{$index+1}}</a></br>
-                                                                        </span>
+                                                                          <a ng-click="openHyperlink(obj.Name)">Link</a>
                                                                        
                                                                     </span>
                                                                 </td>
